@@ -38,7 +38,7 @@ function cekDevice(){
                 navbar.classList.add('scroll');
                 // menampilkan button scrollUp
                 scrollUp.classList.add('show');
-            }else if (window.scrollY === 0){
+            }else if (window.scrollY < 50){
                 header.appendChild(navbar);
                 navbar.classList.remove('scroll');
                 scrollUp.classList.remove('show');
@@ -60,19 +60,33 @@ function cekDevice(){
         
         if(window.scrollY > 50){
             document.body.insertBefore(navbar,header);
-            navbarScroll();
         }
+        navbarScroll();
         
     }else if(getLebar < 850){
-
         // memindahkan navbar ke sebelum header
         // memperbaiki masalah animasi pada saat discroll
-        if(header.hasChildNodes(navbar)){
-            document.body.insertBefore(navbar,header);
-        }
+        
+        window.addEventListener('scroll',()=>{
+            
+            if(window.scrollY > 100){
 
-        navbarScroll();
-
+                if(!header.hasChildNodes(navbar)){
+                    header.appendChild(navbar);
+                }
+                // menambahkan class scroll agar navbar memiliki position fixed
+                navbar.classList.add('scroll');
+                // menampilkan button scrollUp
+                scrollUp.classList.add('show');
+            }else if (window.scrollY === 0){
+                if(header.hasChildNodes(navbar)){
+                    document.body.insertBefore(navbar,header);
+                    // header.removeChild(navbar);
+                }
+                navbar.classList.remove('scroll');
+                scrollUp.classList.remove('show');
+            }
+        });  
     }   
 }
 
@@ -105,17 +119,17 @@ function getAttHref(target){
 checkBox.addEventListener('change', () => {
     const navbarMobile = navbarList.cloneNode(true);
     const mobileNavbar = document.querySelector('.navbar.mobile');
-        if (checkBox.checked) {
-            navbar.appendChild(navbarMobile);
-            navbarMobile.classList.add('mobile');
-
-            // menambahkan class animation
-            mobileNavbar.classList.add('animation');
-
-
-            getAttHref(".navbar.mobile a");
-            const navbarLinks = document.querySelectorAll('.navbar.mobile a');
-
+    if (checkBox.checked) {
+        navbar.appendChild(navbarMobile);
+        navbarMobile.classList.add('mobile');
+        
+        // menambahkan class animation
+        mobileNavbar.classList.add('animation');
+        
+        
+        getAttHref(".navbar.mobile a");
+        const navbarLinks = document.querySelectorAll('.navbar.mobile a');
+        
             navbarLinks.forEach(link =>{
                 link.addEventListener('click', ()=>{
                     if (mobileNavbar) {
